@@ -1,0 +1,45 @@
+#!/bin/bash
+#####################切换壁纸脚本##############################################
+#作者:liop
+#完成时间:2019.11.7
+#自动切换壁纸
+#仅限于真机且/var/lib/libvirt/images/tedu-wallpaper-01.png这个文件必须属于student且处于解锁状态,root用户请随意
+#图片名称必须以bgimages开头
+#############################################################################
+p=`find /home/student -name "bgimages*"`
+p1=($p)
+flag=0
+saveurl="~"
+filename=".1.txt"
+if [ ! -e $saveurl ];then
+	mkdir -p $saveurl
+	touch ${saveurl}/$filename
+fi
+now_img=`head -1 ${saveurl}/$filename` &> /dev/null
+echo $now_img
+if [ -z "$now_img" ]; then
+	echo ${p1[0]} > ${saveurl}/$filename
+	cp -rf ${p1[0]}  /var/lib/libvirt/images/tedu-wallpaper-01.png
+	flag=1
+	exit
+fi
+###########################壁纸切换###########################################
+while :
+do
+	for n in $p
+	do
+		if [ $flag -eq 1 ]; then
+			cp -rf $n  /var/lib/libvirt/images/tedu-wallpaper-01.png
+			echo $n > ${saveurl}/$filename
+			exit
+		fi
+		if [ ${now_img} == $n ];then
+			flag=1
+			continue
+		fi
+	done
+	if [ $flag -eq 0 ]; then
+		echo '' > ${saveurl}/$filename
+		exit
+	fi
+done
