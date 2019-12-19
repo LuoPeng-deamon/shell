@@ -1,0 +1,17 @@
+#! /bin/bash
+while :
+do
+        clear
+        ifconfig eth0 | awk '{if(NR==2){print "本机ip为"$2}}'
+        uptime |awk '{print "本机cpu的平均负载:"$NF}'
+        ifconfig eth0 | awk '/RX p/{print $6,$7}' |awk -F[\(\)] '{print "eth0的流量为:"$2}'
+        free -m | awk '/Mem:/{print "内存剩余:"$4" M"}'
+        df -h | awk '/\/$/{print "根分区剩余:"$4}'
+        awk 'END{print "当前共有用户:"NR"个"}' /etc/passwd
+        echo "当前登录账号:`who | wc -l`个"
+        echo "当前进程数为:`ps aux |wc -l`个"
+        echo "当前已安装的软件包数量为:`rpm -qa |wc -l`个"
+        sleep 3
+        clear
+done
+

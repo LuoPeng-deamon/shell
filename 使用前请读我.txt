@@ -1,0 +1,11 @@
+targetcli-server.sh 为ISCSI网络磁盘服务端搭建脚本
+使用方法: targetcli-server.sh /dev/vdb
+/dev/vdb 为您想共享的网络磁盘
+
+iscsi-client.sh 为ISCSI客户端
+直接运行就好
+
+vsftp.sh 为文件共享服务器
+此服务器为需密码登录的用户,有两个登录用户!
+
+ip_config.sh 为聚合链路文件脚本

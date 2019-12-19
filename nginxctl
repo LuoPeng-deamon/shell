@@ -1,0 +1,32 @@
+#! /bin/bash
+#####################nginx控制脚本################
+#作者:liop
+#完成时间:2019.11.5
+#nginx控制脚本
+#--help    
+#nginxctl start 开启nginx| stop 关闭nginx| restart 重启nginx| status 查看nginx状态
+##################################################
+colorecho () {
+        echo -e "\033[$1m$2\033[0m"
+}
+
+case $1 in
+start)
+        netstat -ntulp | grep -q nginx
+        [ $? -eq 0 ] && colorecho 32 "nginx已开启" && exit
+        /usr/local/nginx/sbin/nginx ;;
+stop)
+        netstat -ntulp | grep -q nginx
+        [ $? -ne 0 ] && colorecho 31 "nginx已关闭" && exit
+        /usr/local/nginx/sbin/nginx -s stop ;;
+restart)
+        netstat -ntulp | grep -q nginx
+        [ $? -ne 0 ] || /usr/local/nginx/sbin/nginx -s stop
+        /usr/local/nginx/sbin/nginx ;;
+status)
+        netstat -ntulp | grep -q nginx
+        [ $? -eq 0 ] && colorecho 32 "nginx已开启" || colorecho 31 "nginx未开启" ;;
+*)
+        echo "start | stop | restart | status"
+esac
+
